@@ -1,4 +1,10 @@
+from style    import Style
+from datetime import datetime
+from time     import time
+import json
+
 #Message Class definition
+
 class Message(Style):
     config = dict()
 
@@ -36,21 +42,23 @@ class Message(Style):
 
     def dynamic_Print(self):
         print("\n ")
-        
+
         print('\033[K'  + self.txt_color['red']+ 'ID =  '+str(hex( self.msg.arbitration_id))            +self.bg_color['black']+'  '+
               '\033[K'  + self.txt_color['blue']+ 'DLC = '+str(self.msg.dlc)                            +self.bg_color['black']+'  '+
               '\033[K'  + self.txt_color['blue']+ 'Descr = '+self.msg_info                              +self.bg_color['black']+'  '+
               '\033[K'  + self.txt_color['green']+ 'Counts = '+str(self.counter)                        +self.bg_color['black']+'  '+
               '\033[K'  + self.txt_color['purple']+ 'TimeStamp = '+str(self.time_stamp)                 +self.bg_color['black']+'  '+
               '\033[K'  + self.txt_color['light_blue']+'Cycle = '+str( int ((self.msg_recv_time)*1000) )+' ms')
-        
+
     @classmethod
     def config_apply(cls,file,mode):
 
         try:
+
             with open(file,mode) as settings_file:
 
                 cls.config = json.load(settings_file)
+
         except:
             print("Error handling confguration file inside Message Class ")
 

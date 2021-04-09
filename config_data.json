@@ -1,0 +1,11 @@
+{
+  "messages":{
+              "0x390":"SoC",
+              "0x351":"Current",
+              "0x355":"Voltage",
+              "0x356":"SoH",
+              "0x35a":"Cell 1 Volt",
+              "0x4":"Bus noise" 
+             }
+}
+
