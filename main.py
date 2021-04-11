@@ -24,18 +24,19 @@ def Serve_Can():
 
     os.system('clear')
 
+    Message.config_apply('config_data.json','r')
+
     canbus = CAN('can0','125000').bus
 
     buffer = {}
     style =  Style()
 
-    Message.config_apply('config_data.json','r')
 
 
     try:
         while True:
 
-            #moves cursor in position X:0 ,Y:0
+            #moves cursor in position X:0 ,Y:0M
             os.system(" printf '\033[0;0H] ' ")
 
             #Receives Can bus messages (blocking function )
@@ -58,15 +59,17 @@ def Serve_Can():
                 buffer[msg.arbitration_id].cycle_timer()
 
                 id = str(hex(msg.arbitration_id ))
+
+                buffer[msg.arbitration_id].data_handle(id)
                 #check if message is defined in our config file
-                if id in Message.config['messages']:
-                    buffer[msg.arbitration_id].msg_info = Message.config['messages'][id]
+                #if id in Message.config['messages']:
+                   # buffer[msg.arbitration_id].msg_info = Message.config['messages'][id]
 
             #New message received create new Message class
             else:
                 buffer[msg.arbitration_id] = Message(msg)
 
-            #Print content   
+            #Print content
             for message in buffer:
                 buffer[message].dynamic_Print()
     except:
