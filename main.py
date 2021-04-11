@@ -23,10 +23,12 @@ from style    import Style
 def Serve_Can():
 
     os.system('clear')
-
+    
     Message.config_apply('config_data.json','r')
-
-    canbus = CAN('can0','125000').bus
+  
+    channel = 'can0'
+    bitrate = '125000'
+    canbus = CAN(channel,bitrate).bus
 
     buffer = {}
     style =  Style()
@@ -38,7 +40,7 @@ def Serve_Can():
 
             #moves cursor in position X:0 ,Y:0M
             os.system(" printf '\033[0;0H] ' ")
-
+            print("\033[31m CHANNEL --> {}  Bitrate --> {} bit/sec ".format(channel,bitrate ) )
             #Receives Can bus messages (blocking function )
             msg = canbus.recv(30.0)
 
