@@ -33,50 +33,47 @@ def Serve_Can():
     buffer = {}
     style =  Style()
 
+    timeout = 30
 
-   # try:
-    while True:
+    try:
+        while True:
 
-          #moves cursor in position X:0 ,Y:0M
-        os.system(" printf '\033[0;0H ' ")
-        print("\033[31m CHANNEL --> {}  Bitrate --> {} bit/sec ".format(channel,bitrate ) )
+          #moves cursor in position X:0 ,Y:0
+            os.system(" printf '\033[0;0H ' ")
+            print("\033[31m CHANNEL --> {}  Bitrate --> {} bit/sec ".format(channel,bitrate ) )
           #Receives Can bus messages (blocking function )
-        msg = canbus.recv(30.0)
+            msg = canbus.recv(timeout)
             
-          #30seconds passed without a message
-        if msg is None:
-            print('No message was received')
+          #timeout seconds passed without a message
+            if msg is None:
+                print('No message was received')
 
           #Message recieved and exists inside our buffer
-        elif msg.arbitration_id in buffer:
+            elif msg.arbitration_id in buffer:
 
-            buffer[msg.arbitration_id].msg = msg
+                buffer[msg.arbitration_id].msg = msg
 
-            buffer[msg.arbitration_id].incr()
+                buffer[msg.arbitration_id].incr()
 
-            buffer[msg.arbitration_id].get_timestamp()
+                buffer[msg.arbitration_id].get_timestamp()
 
-            buffer[msg.arbitration_id].cycle_timer()
+                buffer[msg.arbitration_id].cycle_timer()
 
-            id = str(hex(msg.arbitration_id ))
+                id = str(hex(msg.arbitration_id ))
 
-            buffer[msg.arbitration_id].data_handle(id)
-                #check if message is defined in our config file
-           # if id in Message.config['messages']:
-
-               # buffer[msg.arbitration_id].data_handle(id)
+                buffer[msg.arbitration_id].data_handle(id)
 
           #New message received create new Message class
-        else:
-            buffer[msg.arbitration_id] = Message(msg)
+            else:
+                buffer[msg.arbitration_id] = Message(msg)
 
           #Print content
-        for message in buffer:
-            buffer[message].dynamic_Print()
-   # except:
-        #os.system('clear')
-    #    print("Error in main loop or signal for stop   ")
-     #   os.system('sudo ifconfig can0 down')
+            for message in buffer:
+                buffer[message].dynamic_Print()
+    except:
+        os.system('clear')
+        print("Error in main loop or signal for stop   ")
+        os.system('sudo ifconfig can0 down')
 
 
 #Main function 

@@ -1,42 +1,44 @@
 {
-  "messages":{
-              "0x390":{"Enable":"ON",
+  "messages":{"_comments_1":"The sum of bytes_per_value list must be the same as the DLC of the message ",
+              "_comments_2":"The bytes_per_value musthave the same length as data_descr ",
+
+              "0x100":{"Enable":"ON",
                        "bytes_per_value":[2],
                        "data_descr":["Soc"]  
                                       
                       },
 
-              "0x351":{"Enable":"ON",
+              "0x101":{"Enable":"ON",
                        "bytes_per_value":[2,2,4],
                        "data_descr":["Soc","Current","Voltage"] 
 
                       },
 
-              "0x355":{"Enable":"ON",
+              "0x102":{"Enable":"ON",
                        "bytes_per_value":[2,4],
                        "data_descr":["Soc","Current"] 
 
                       },
 
-              "0x356":{"Enable":"ON",
+              "0x103":{"Enable":"ON",
                        "bytes_per_value":[2,2],
                        "data_descr":["Soc","Current"] 
 
                       },
 
-              "0x35a":{"Enable":"ON",
+              "0x104":{"Enable":"ON",
                        "bytes_per_value":[2,2,4],
                        "data_descr":["Soc","Current","Voltage"] 
                       },
 
-              "0x4":{"Enable":"ON",
+              "0x105":{"Enable":"ON",
                      "bytes_per_value":[2,2,4],
                      "data_descr":["Soc","Current","Voltage"]
 
                     }
-    
-          
-        }          
+
+
+        }
 
 
 }
