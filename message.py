@@ -30,9 +30,11 @@ class Message(Style):
         id = str(hex(msg.arbitration_id))
 
         if self.__class__.config_applied :
-            self.enable = True  if (self.__class__.config["messages"][id]["Enable"] == "ON") else False
+            if (id in self.__class__.config["messages"]):
+                self.enable = True  if (self.__class__.config["messages"][id]["Enable"] == "ON") else False
 
-    #Counts cycle of receiving in ms
+
+   #Counts cycle of receiving in ms
     def cycle_timer(self):
         if self.msg_recv_time_previous ==0 :
             self.msg_recv_time_previous = self.msg.timestamp
@@ -71,34 +73,37 @@ class Message(Style):
         self.data_handled = {}
 
         if (self.__class__.config_applied) :
+            if id in self.__class__.config["messages"]:
 
-            size_pattern = self.__class__.config["messages"][id]["bytes_per_value"]
+                size_pattern = self.__class__.config["messages"][id]["bytes_per_value"]
 
-            descr_pattern =  self.__class__.config["messages"][id]["data_descr"]
-
-
-            if (self.msg.dlc == sum(size_pattern) ):
-
-                if self.enable:
-
-                    index=0
-                    counter=0
-                    for i in size_pattern:
-
-                        value=0
-                        for j in range(index,(i+index),1):
-
-                            value = ( (value << 8 ) | self.msg.data[j] )
+                descr_pattern =  self.__class__.config["messages"][id]["data_descr"]
 
 
-                        self.data_handled[ descr_pattern[counter] ]= value
-                        counter+= 1 
-                        index = index + i
+                if (self.msg.dlc == sum(size_pattern) ):
 
+                    if self.enable:
+
+                        index=0
+                        counter=0
+                        for i in size_pattern:
+
+                            value=0
+                            for j in range(index,(i+index),1):
+
+                                value = ( (value << 8 ) | self.msg.data[j] )
+
+
+                            self.data_handled[ descr_pattern[counter] ]= value
+                            counter+= 1 
+                            index = index + i
+
+                else:
+                    self.data_handled = [i for i in self.msg.data ] 
+                    self.data_handled.append("Wrong configuration Data to native form ")
             else:
                 self.data_handled = [i for i in self.msg.data ] 
-                self.data_handled.append("Wrong configuration Data to native form ")
-
+                self.data_handled.append("Wrong configuration Data to native form ") 
 
 
     @classmethod
@@ -110,7 +115,7 @@ class Message(Style):
 
                 cls.config = json.load(settings_file)
                 cls.config_applied = True
-                
+
         except:
             print("Error handling confguration file inside Message Class ")
             print("*** NO CONFIG APPLIED ***")
