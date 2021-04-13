@@ -16,8 +16,6 @@ class Message(Style):
 
         self.counter = 0
 
-        self.data_handled = {}
-
         self.info = "Message Class "
 
         self.time_stamp = 0
@@ -27,7 +25,10 @@ class Message(Style):
         self.msg_recv_time_previous=0
 
         self.enable = True
+
         id = str(hex(msg.arbitration_id))
+
+        self.data_handled =  [i for i in self.msg.data ]
 
         if self.__class__.config_applied :
             if (id in self.__class__.config["messages"]):
@@ -70,7 +71,9 @@ class Message(Style):
 
 
     def data_handle(self,id):
-        self.data_handled = {}
+
+        self.data_handled = [i for i in self.msg.data ]
+
 
         if (self.__class__.config_applied) :
             if id in self.__class__.config["messages"]:
@@ -82,28 +85,25 @@ class Message(Style):
 
                 if (self.msg.dlc == sum(size_pattern) ):
 
-                    if self.enable:
+                    self.data_handled = {}
+                    index=0
+                    counter=0
+                    for i in size_pattern:
 
-                        index=0
-                        counter=0
-                        for i in size_pattern:
+                        value=0
+                        for j in range(index,(i+index),1):
 
-                            value=0
-                            for j in range(index,(i+index),1):
-
-                                value = ( (value << 8 ) | self.msg.data[j] )
+                            value = ( (value << 8 ) | self.msg.data[j] )
 
 
-                            self.data_handled[ descr_pattern[counter] ]= value
-                            counter+= 1 
-                            index = index + i
-
+                        self.data_handled[ descr_pattern[counter] ]= value
+                        counter+= 1 
+                        index = index + i
                 else:
-                    self.data_handled = [i for i in self.msg.data ] 
-                    self.data_handled.append("Wrong configuration Data to native form ")
+
+                    self.data_handled.append("***Wrong Configuration***")
             else:
-                self.data_handled = [i for i in self.msg.data ] 
-                self.data_handled.append("Wrong configuration Data to native form ") 
+                self.data_handled.append("***Message is missing from Configuration***")        
 
 
     @classmethod

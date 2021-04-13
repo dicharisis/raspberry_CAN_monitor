@@ -14,8 +14,8 @@
 
                       },
 
-              "0x102":{"Enable":"ON",
-                       "bytes_per_value":[2,4],
+              "0x351":{"Enable":"ON",
+                       "bytes_per_value":[2,4,3,2,1],
                        "data_descr":["Soc","Current"] 
 
                       },
@@ -26,8 +26,8 @@
 
                       },
 
-              "0x104":{"Enable":"ON",
-                       "bytes_per_value":[2,2,4],
+              "0x355":{"Enable":"ON",
+                       "bytes_per_value":[2,2,2],
                        "data_descr":["Soc","Current","Voltage"] 
                       },
 
